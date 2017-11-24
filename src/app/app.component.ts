@@ -35,6 +35,11 @@ export class AppComponent {
         time.getMonth() + '\/' + time.getDate() + '\/' + time.getFullYear() + ' ' +
         time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds());
 });
+
+
+this.socket.on('users.count', function (number) {
+  document.getElementById('users-count').innerHTML = number;
+});
   
   }
 }
