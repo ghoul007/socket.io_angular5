@@ -12,7 +12,31 @@ export class AppComponent {
   public socket;
 
   constructor() {
-    this.socket = io("http://localhost:3000");
+    this.socket = io("http://localhost:3000", {
+      'reconnection': true,
+      'reconnectionDelay': 500,
+      'reconnectionAttempts': 5
+  });
+
+
+
+    this.socket.on('reconnect', function (number) {
+      console.info('After attempting ' + number + ' times, we finally reconnected!');
+  });
+
+  this.socket.on('reconnect_attempt', function (number) {
+      console.info('Reconnect attempt number ' + number);
+  });
+
+  this.socket.on('connect_error', function () {
+      console.warn('Error connecting to Socket.IO');
+  });
+
+  this.socket.on('reconnect_failed', function () {
+      console.error('We failed to reconnect to Socket.IO. We give up.');
+  });
+
+
     this.socket.on("greeting-from-server", function(message) {
       document.body.appendChild(document.createTextNode(message.greeting));
 
