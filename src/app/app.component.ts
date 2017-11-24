@@ -28,6 +28,13 @@ export class AppComponent {
       '</tr>');
       $('#recent-comments').append($row);
   });
+
+  this.socket.on('seconds.update', function (data) {
+    var time = new Date(data.time);
+    $('h1').text(
+        time.getMonth() + '\/' + time.getDate() + '\/' + time.getFullYear() + ' ' +
+        time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds());
+});
   
   }
 }

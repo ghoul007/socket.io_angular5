@@ -69,6 +69,12 @@ io.on('connection', function(socket) {
     }, 2000);
 
 
+    setInterval(function() {
+        socket.emit('seconds.update', {
+            time: new Date()
+        });
+    }, 1000);
+
     // socket.emit('comments.count', {
     //     count: i + 1
     // });
