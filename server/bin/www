@@ -24,6 +24,21 @@ app.set('port', port);
 var server = http.createServer(app);
 
 
+var comments = [{
+    user: 'Batman',
+    comment: 'Great post!'
+}, {
+    user: 'Robin',
+    comment: 'Interesting ideas...'
+}, {
+    user: 'Joker',
+    comment: 'Thanks, Batman!'
+}, {
+    user: 'Bruce Wayne',
+    comment: 'I agree with Batman'
+}];
+
+
 io = socketIO(server);
 io.on('connection', function(socket) {
     socket.emit('greeting-from-server', {
@@ -33,6 +48,32 @@ io.on('connection', function(socket) {
     socket.on('greeting-from-client', function(msg) {
         console.log(msg.greeting);
     })
+
+
+    // for (var i = 0; i < comments.length; i++) {
+    // example1
+    // socket.emit('comment.add', comments[i]);
+
+    // exxample2
+    var i = 0;
+    var addingPosts = setInterval(function() {
+        if (comments[i]) {
+            socket.emit('comment.add', comments[i]);
+            socket.emit('comments.count', {
+                count: i + 1
+            });
+            i++;
+        } else {
+            clearInterval(addingPosts);
+        }
+    }, 2000);
+
+
+    // socket.emit('comments.count', {
+    //     count: i + 1
+    // });
+    // }
+
 });
 io.on('disconnect', function() {
     console.log('The socket disconnected');

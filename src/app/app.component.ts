@@ -1,5 +1,7 @@
 import { Component } from "@angular/core";
 import * as io from "socket.io-client";
+import * as $ from "jquery";
+
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
@@ -16,5 +18,16 @@ export class AppComponent {
 
       this.emit("greeting-from-client", { greeting: "hello Server" });
     });
+    this.socket.on("comments.count", function(data) {
+      $('#comments-count').text(data.count);
+    });
+    this.socket.on('comment.add', function (data) {
+      var $row = $('<tr>' +
+          '<td>' + data.user + '</td>' +
+          '<td>' + data.comment + '</td>' +
+      '</tr>');
+      $('#recent-comments').append($row);
+  });
+  
   }
 }
